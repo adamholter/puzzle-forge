@@ -1,0 +1,9 @@
+{
+  "name": "puzzle-forge",
+  "version": "1.0.0",
+  "description": "D&D Puzzle Creation Harness — multi-model critique pipeline",
+  "main": "server.cjs",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
