@@ -7,7 +7,7 @@
   <meta name="description" content="Multi-model AI harness for creating robust D&D puzzles.">
   <meta property="og:title" content="Puzzle Forge">
   <meta property="og:description" content="Multi-model AI harness for D&D puzzle creation. Bring your own OpenRouter key.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://openrouter.ai; img-src 'self' data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://openrouter.ai https://cdn.jsdelivr.net; img-src 'self' data:;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
@@ -15,24 +15,24 @@
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     :root{
-      --bg:#0b0a08;--bg-r:#121009;--bg-s:#0f0e0b;--bg-i:#1b1916;
-      --border:#201e18;--bm:#2d2a22;--bh:#3d3828;
-      --t:#e0d6c0;--t2:#9a9080;--t3:#5a5448;--t4:#3a3630;
-      --fire:#e85a18;--fire2:#ff7030;--fd:#6a2808;
-      --gold:#c89828;--gold2:#e0b030;--gd:#6a4e10;--amber:#d07820;
-      --ca:#c89828;--cc:#4a9ec8;--cp:#42b068;--cd:#e04838;--cs:#9858d8;
+      --bg:#faf8f4;--bg-r:#f3f0eb;--bg-s:#edeae4;--bg-i:#e6e2db;
+      --border:#d8d3cb;--bm:#c4bfb7;--bh:#a09b92;
+      --t:#1c1a16;--t2:#4e4840;--t3:#8c867d;--t4:#b4afa8;
+      --fire:#c84810;--fire2:#e05a18;--fd:#a83808;
+      --gold:#9a7010;--gold2:#b88818;--gd:#7a5808;--amber:#a86010;
+      --ca:#9a7010;--cc:#2878a8;--cp:#287848;--cd:#c83028;--cs:#7838b8;
       --fd2:'Cinzel Decorative',serif;--fh:'Cinzel',serif;
       --fb:'Crimson Pro',serif;--fm:'JetBrains Mono',monospace;
       --sw:300px;--hh:54px
     }
-    html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t);font-family:var(--fb);font-size:16px}
+    html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t);font-family:var(--fb);font-size:16px;-webkit-font-smoothing:antialiased}
     ::-webkit-scrollbar{width:5px;height:5px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:var(--bm);border-radius:3px}
     header{position:fixed;inset:0 0 auto 0;height:var(--hh);background:var(--bg-s);border-bottom:1px solid var(--bm);display:flex;align-items:center;padding:0 18px;gap:14px;z-index:200}
     .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
     .logo svg{width:28px;height:28px;flex-shrink:0}
-    .logo-t{font-family:var(--fd2);font-size:16px;letter-spacing:.1em;color:var(--gold);text-shadow:0 0 24px rgba(200,152,40,.35)}
+    .logo-t{font-family:var(--fd2);font-size:16px;letter-spacing:.1em;color:var(--gold)}
     .logo-p{width:1px;height:20px;background:var(--bm)}
     .logo-s{font-family:var(--fh);font-size:9px;letter-spacing:.22em;color:var(--t3);text-transform:uppercase}
     .hdr-r{margin-left:auto;display:flex;align-items:center;gap:10px}
@@ -67,14 +67,14 @@
     .mci{width:100%;background:var(--bg-i);border:1px solid var(--bm);color:var(--t);font-family:var(--fm);font-size:11px;padding:6px 22px 6px 8px;border-radius:2px;outline:none;transition:border-color .15s;cursor:pointer}
     .mci:focus{border-color:var(--gd)}
     .mcarr{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:9px;pointer-events:none;line-height:1}
-    .mcdd{display:none;position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:500;background:var(--bg-r);border:1px solid var(--bh);border-radius:3px;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+    .mcdd{display:none;position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:500;background:var(--bg-r);border:1px solid var(--bh);border-radius:3px;max-height:220px;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12)}
     .mcw.open .mcdd{display:block}
     .mcsearch{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--t);font-family:var(--fm);font-size:11px;padding:7px 9px;outline:none;position:sticky;top:0;background:var(--bg-r);z-index:1}
     .mcempty{font-family:var(--fm);font-size:10px;color:var(--t3);padding:10px 9px;text-align:center}
     .mcloading{font-family:var(--fh);font-size:9px;letter-spacing:.1em;color:var(--t3);padding:10px 9px;text-align:center;animation:bp 1.5s ease infinite}
     .mcgh{font-family:var(--fh);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);padding:8px 9px 4px;position:sticky;top:32px;background:var(--bg-r);border-top:1px solid var(--border)}
     .mcitem{display:flex;align-items:center;justify-content:space-between;padding:5px 9px;cursor:pointer;transition:background .1s}
-    .mcitem:hover,.mcitem.focused{background:rgba(200,152,40,.08)}
+    .mcitem:hover,.mcitem.focused{background:rgba(154,112,16,.08)}
     .mcin{font-family:var(--fm);font-size:10px;color:var(--t);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
     .mcctx{font-family:var(--fm);font-size:9px;color:var(--t3);margin-left:8px;flex-shrink:0}
     .arow{background:var(--bg-r);border:1px solid var(--border);border-radius:3px;padding:9px;margin-bottom:6px;position:relative}
@@ -84,9 +84,9 @@
     .rmbtn{position:absolute;top:7px;right:7px;background:none;border:none;color:var(--t4);cursor:pointer;font-size:11px;padding:2px;line-height:1;border-radius:2px;transition:color .15s}
     .rmbtn:hover{color:var(--cd)}
     .fwrap{padding:14px;margin-top:auto;border-top:1px solid var(--border)}
-    .fbtn{width:100%;padding:13px 16px;background:linear-gradient(180deg,rgba(232,90,24,.06) 0%,transparent 100%);border:1px solid var(--fd);color:var(--fire);font-family:var(--fh);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;overflow:hidden;transition:all .2s}
-    .fbtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(232,90,24,.12) 50%,transparent 100%);transform:translateX(-100%);transition:transform .4s}
-    .fbtn:hover{border-color:var(--fire);color:var(--fire2);box-shadow:0 0 24px rgba(232,90,24,.12)}
+    .fbtn{width:100%;padding:13px 16px;background:linear-gradient(180deg,rgba(200,72,16,.05) 0%,transparent 100%);border:1px solid var(--fd);color:var(--fire);font-family:var(--fh);font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;overflow:hidden;transition:all .2s}
+    .fbtn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(200,72,16,.1) 50%,transparent 100%);transform:translateX(-100%);transition:transform .4s}
+    .fbtn:hover{border-color:var(--fire);color:var(--fire2);box-shadow:0 0 20px rgba(200,72,16,.1)}
     .fbtn:hover::after{transform:translateX(100%)}
     .fbtn:disabled{opacity:.35;cursor:not-allowed;border-color:var(--bm);color:var(--t3)}
     .fbtn:disabled::after{display:none}
@@ -107,9 +107,9 @@
     .phase{margin-bottom:16px;animation:pin .25s ease-out both}
     @keyframes pin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
     .phdr{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:3px 3px 0 0;border:1px solid transparent;margin-bottom:1px}
-    .phdr.pd{background:rgba(200,152,40,.07);border-color:rgba(200,152,40,.18)}
-    .phdr.pc{background:rgba(74,158,200,.07);border-color:rgba(74,158,200,.18)}
-    .phdr.ps{background:rgba(152,88,216,.07);border-color:rgba(152,88,216,.18)}
+    .phdr.pd{background:rgba(154,112,16,.06);border-color:rgba(154,112,16,.22)}
+    .phdr.pc{background:rgba(40,120,168,.06);border-color:rgba(40,120,168,.22)}
+    .phdr.ps{background:rgba(120,56,184,.06);border-color:rgba(120,56,184,.22)}
     .picon{font-size:13px;flex-shrink:0}
     .pname{font-family:var(--fh);font-size:9px;letter-spacing:.2em;text-transform:uppercase}
     .pd .pname{color:var(--ca)}.pc .pname{color:var(--cc)}.ps .pname{color:var(--cs)}
@@ -120,7 +120,7 @@
     @keyframes cin{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
     .card.arch{--rc:var(--ca)}.card.crit{--rc:var(--cc)}.card.play{--rc:var(--cp)}.card.dev{--rc:var(--cd)}.card.syn{--rc:var(--cs)}
     .card.active{animation:cin .3s cubic-bezier(.22,.68,.36,1.2) both,cglow 2.5s ease infinite .3s}
-    .card.arch.active{--rgb:200,152,40}.card.crit.active{--rgb:74,158,200}.card.play.active{--rgb:66,176,104}.card.dev.active{--rgb:224,72,56}.card.syn.active{--rgb:152,88,216}
+    .card.arch.active{--rgb:154,112,16}.card.crit.active{--rgb:40,120,168}.card.play.active{--rgb:40,120,72}.card.dev.active{--rgb:200,48,40}.card.syn.active{--rgb:120,56,184}
     @keyframes cglow{0%,100%{box-shadow:0 0 14px rgba(var(--rgb),.1)}50%{box-shadow:0 0 22px rgba(var(--rgb),.2)}}
     .chdr{display:flex;align-items:center;gap:9px;padding:9px 11px 8px;border-bottom:1px solid var(--border)}
     .cav{width:26px;height:26px;border-radius:50%;background:var(--bg-i);border:1px solid var(--bm);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
@@ -152,14 +152,14 @@
     .cerr{padding:8px 12px;font-family:var(--fm);font-size:11px;color:var(--cd);border-top:1px solid var(--border)}
     .finwrap{margin-top:28px;animation:fin .5s cubic-bezier(.16,.6,.3,1) both}
     @keyframes fin{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-    .finbanner{display:flex;align-items:center;gap:14px;padding:15px 18px;background:rgba(200,152,40,.06);border:1px solid rgba(200,152,40,.25);border-radius:4px 4px 0 0}
+    .finbanner{display:flex;align-items:center;gap:14px;padding:15px 18px;background:rgba(154,112,16,.05);border:1px solid rgba(154,112,16,.28);border-radius:4px 4px 0 0}
     .finicon{font-size:22px}
-    .fintitle{font-family:var(--fd2);font-size:16px;letter-spacing:.1em;color:var(--gold);text-shadow:0 0 32px rgba(200,152,40,.35)}
+    .fintitle{font-family:var(--fd2);font-size:16px;letter-spacing:.1em;color:var(--gold)}
     .finsub{font-family:var(--fh);font-size:8px;letter-spacing:.2em;color:var(--t3);margin-top:2px;text-transform:uppercase}
     .finacts{margin-left:auto;display:flex;gap:7px}
     .finbtn{font-family:var(--fh);font-size:9px;letter-spacing:.12em;background:none;border:1px solid var(--bm);color:var(--t3);padding:6px 12px;border-radius:2px;cursor:pointer;transition:all .15s}
     .finbtn:hover{color:var(--gold);border-color:var(--gd)}
-    .finbody{background:var(--bg-r);border:1px solid rgba(200,152,40,.18);border-top:none;border-radius:0 0 4px 4px;padding:26px 30px 32px}
+    .finbody{background:var(--bg-r);border:1px solid rgba(154,112,16,.2);border-top:none;border-radius:0 0 4px 4px;padding:26px 30px 32px}
     .finbody h1,.finbody h2{font-family:var(--fh);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);margin:26px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--bh)}
     .finbody h2:first-child{margin-top:0}
     .finbody h3{font-family:var(--fh);font-size:11px;letter-spacing:.12em;color:var(--amber);margin:18px 0 7px}
@@ -177,7 +177,7 @@
 <body>
 <header>
   <a class="logo" href="/">
-    <svg viewBox="0 0 28 28" fill="none"><path d="M14 3L17 10L24 10L18.5 15L20.5 22L14 18.5L7.5 22L9.5 15L4 10L11 10Z" stroke="#c89828" stroke-width="1.4" fill="rgba(200,152,40,.12)"/><circle cx="14" cy="14" r="2" fill="#c89828"/><path d="M14 1.5v3M14 23.5v3M1.5 14h3M23.5 14h3" stroke="#c89828" stroke-width="1" stroke-linecap="round" opacity=".35"/></svg>
+    <svg viewBox="0 0 28 28" fill="none"><path d="M14 3L17 10L24 10L18.5 15L20.5 22L14 18.5L7.5 22L9.5 15L4 10L11 10Z" stroke="#9a7010" stroke-width="1.4" fill="rgba(154,112,16,.12)"/><circle cx="14" cy="14" r="2" fill="#9a7010"/><path d="M14 1.5v3M14 23.5v3M1.5 14h3M23.5 14h3" stroke="#9a7010" stroke-width="1" stroke-linecap="round" opacity=".4"/></svg>
     <span class="logo-t">PUZZLE FORGE</span>
   </a>
   <div class="logo-p"></div>
@@ -235,11 +235,11 @@
     <div id="output">
       <div class="empty" id="empty">
         <svg width="72" height="72" viewBox="0 0 72 72" fill="none" opacity=".45">
-          <rect x="18" y="54" width="36" height="8" rx="2" fill="#c89828" opacity=".6"/>
-          <rect x="27" y="48" width="18" height="8" rx="1" fill="#c89828" opacity=".5"/>
-          <path d="M36 8 C29 20 22 29 22 38 C22 47 28.5 54 36 54 C43.5 54 50 47 50 38 C50 29 43 20 36 8Z" fill="#e85818" opacity=".65"/>
-          <path d="M36 18 C32 27 28 33 28 40 C28 46 31.5 51 36 51 C40.5 51 44 46 44 40 C44 33 40 27 36 18Z" fill="#ff8030" opacity=".75"/>
-          <path d="M36 27 C34 32 32 36 32 40 C32 43.5 33.8 47 36 47 C38.2 47 40 43.5 40 40 C40 36 38 32 36 27Z" fill="#ffe8a0" opacity=".8"/>
+          <rect x="18" y="54" width="36" height="8" rx="2" fill="#9a7010" opacity=".5"/>
+          <rect x="27" y="48" width="18" height="8" rx="1" fill="#9a7010" opacity=".4"/>
+          <path d="M36 8 C29 20 22 29 22 38 C22 47 28.5 54 36 54 C43.5 54 50 47 50 38 C50 29 43 20 36 8Z" fill="#c84810" opacity=".7"/>
+          <path d="M36 18 C32 27 28 33 28 40 C28 46 31.5 51 36 51 C40.5 51 44 46 44 40 C44 33 40 27 36 18Z" fill="#e06020" opacity=".75"/>
+          <path d="M36 27 C34 32 32 36 32 40 C32 43.5 33.8 47 36 47 C38.2 47 40 43.5 40 40 C40 36 38 32 36 27Z" fill="#f8d080" opacity=".8"/>
         </svg>
         <h2>The Forge Awaits</h2>
         <p>Configure your models, set an optional theme, and ignite the forge to begin crafting your puzzle.</p>
@@ -450,7 +450,7 @@ ForgeEngine.prototype.run = async function(cfg,theme,cb){
 };
 
 // ── Agent meta ──────────────────────────────────────────────
-var AMETA={architect:{icon:'\u2692',cls:'arch'},devil:{icon:'\U0001F40D',cls:'dev'},'synth_1':{icon:'\u2726',cls:'syn'},'synth_2':{icon:'\u2726',cls:'syn'},'synth_3':{icon:'\u2726',cls:'syn'},'critic_0':{icon:'\u2696',cls:'crit'},'critic_1':{icon:'\u2696',cls:'crit'},'critic_2':{icon:'\u2696',cls:'crit'},'playtester_0':{icon:'\U0001F3B2',cls:'play'},'playtester_1':{icon:'\U0001F3B2',cls:'play'},'playtester_2':{icon:'\U0001F3B2',cls:'play'}};
+var AMETA={architect:{icon:'\u2692',cls:'arch'},devil:{icon:'\ud83d\udc0d',cls:'dev'},'synth_1':{icon:'\u2726',cls:'syn'},'synth_2':{icon:'\u2726',cls:'syn'},'synth_3':{icon:'\u2726',cls:'syn'},'critic_0':{icon:'\u2696',cls:'crit'},'critic_1':{icon:'\u2696',cls:'crit'},'critic_2':{icon:'\u2696',cls:'crit'},'playtester_0':{icon:'\ud83c\udfb2',cls:'play'},'playtester_1':{icon:'\ud83c\udfb2',cls:'play'},'playtester_2':{icon:'\ud83c\udfb2',cls:'play'}};
 function ameta(id){ return AMETA[id]||{icon:'\u25c6',cls:'crit'}; }
 
 // ── UI callbacks ─────────────────────────────────────────────
