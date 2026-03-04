@@ -52,7 +52,7 @@ Repeat for 1–3 rounds. Each round, the puzzle gets harder to break.
 | Role | Default Model |
 |------|--------------|
 | Architect | `anthropic/claude-sonnet-4-6` |
-| Synthesizer | `google/gemini-2.5-flash` |
+| Synthesizer | `anthropic/claude-sonnet-4-6` |
 | Critic | `anthropic/claude-sonnet-4-6` |
 | Playtester | `meta-llama/llama-3.3-70b-instruct` |
 | Devil's Advocate | First critic's model |

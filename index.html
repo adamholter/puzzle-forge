@@ -355,49 +355,11 @@ function PP(p){ var d={thorough:'methodical, reads every clue, forms theory befo
 var PS = 'You are the final synthesis stage. Produce the BEST possible puzzle by surgically fixing critical issues.\n\nFormat:\n\n## SYNTHESIS NOTES\n[4-6 bullets: what changed and why]\n\n[Full revised puzzle in standard Architect format]';
 
 function aMsg(theme){ return [{role:'system',content:PA},{role:'user',content:theme?'Create a D&D puzzle for: "'+theme+'". Be inventive.':'Create an original D&D puzzle. Avoid overused mechanics.'}]; }
-function aRevMsg(puz,crits){ var b=crits.map(function(c){return '### '+c.name+' ('+c.role+')
-'+c.content;}).join('
-
----
-
-'); return [{role:'system',content:PA+'
-
-Revise based on critique. Fix broken, keep working.'},{role:'user',content:'CURRENT PUZZLE:
-
-'+puz+'
-
----
-
-CRITIQUE:
-
-'+b+'
-
----
-
-Revise to address critical issues.'}]; }
-function cMsg(p){ return [{role:'system',content:PC},{role:'user',content:'Analyze:
-
-'+p}]; }
-function dMsg(p){ return [{role:'system',content:PD},{role:'user',content:'Break this:
-
-'+p}]; }
-function ptMsg(p,pers){ return [{role:'system',content:PP(pers)},{role:'user',content:'Your DM presents:
-
-'+p}]; }
-function sMsg(p,crits){ var b=crits.map(function(c){return '### '+c.name+' ('+c.role+')
-'+c.content;}).join('
-
----
-
-'); return [{role:'system',content:PS},{role:'user',content:'CURRENT PUZZLE:
-
-'+p+'
-
----
-
-ALL CRITIQUE:
-
-'+b}]; }
+function aRevMsg(puz,crits){ var b=crits.map(function(c){return '### '+c.name+' ('+c.role+')\n'+c.content;}).join('\n\n---\n\n'); return [{role:'system',content:PA+'\n\nRevise based on critique. Fix broken, keep working.'},{role:'user',content:'CURRENT PUZZLE:\n\n'+puz+'\n\n---\n\nCRITIQUE:\n\n'+b+'\n\n---\n\nRevise to address critical issues.'}]; }
+function cMsg(p){ return [{role:'system',content:PC},{role:'user',content:'Analyze:\n\n'+p}]; }
+function dMsg(p){ return [{role:'system',content:PD},{role:'user',content:'Break this:\n\n'+p}]; }
+function ptMsg(p,pers){ return [{role:'system',content:PP(pers)},{role:'user',content:'Your DM presents:\n\n'+p}]; }
+function sMsg(p,crits){ var b=crits.map(function(c){return '### '+c.name+' ('+c.role+')\n'+c.content;}).join('\n\n---\n\n'); return [{role:'system',content:PS},{role:'user',content:'CURRENT PUZZLE:\n\n'+p+'\n\n---\n\nALL CRITIQUE:\n\n'+b}]; }
 
 // ── ForgeEngine ─────────────────────────────────────────────
 function ForgeEngine(key){ this.key=key; this.ctrl=new AbortController(); }
@@ -666,7 +628,7 @@ function toast(msg){ var el=document.getElementById('toast'); el.textContent=msg
 // ── Init ──────────────────────────────────────────────────────
 marked.setOptions({breaks:true,gfm:true});
 S.cbs.arch = new MC(document.getElementById('arch-wrap'),'anthropic/claude-sonnet-4-6');
-S.cbs.syn  = new MC(document.getElementById('syn-wrap'), 'google/gemini-2.5-flash');
+S.cbs.syn  = new MC(document.getElementById('syn-wrap'), 'anthropic/claude-sonnet-4-6');
 document.getElementById('addcr').addEventListener('click',function(){addCritic();});
 document.getElementById('addpt').addEventListener('click',function(){addPt();});
 addCritic({model:'anthropic/claude-sonnet-4-6',name:'Logician'});
