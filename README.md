@@ -54,7 +54,7 @@ Repeat for 1–3 rounds. Each round, the puzzle gets harder to break.
 | Architect | `anthropic/claude-sonnet-4-6` |
 | Synthesizer | `anthropic/claude-sonnet-4-6` |
 | Critic | `anthropic/claude-sonnet-4-6` |
-| Playtester | `anthropic/claude-haiku-4-5` |
+| Playtester | `anthropic/claude-sonnet-4-6` |
 | Devil's Advocate | First critic's model |
 
 ### Playtester Personas

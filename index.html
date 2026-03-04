@@ -598,7 +598,7 @@ function addPt(defs){
   PERSONAS.forEach(function(p){ var o=document.createElement('option'); o.value=p; o.textContent=p.charAt(0).toUpperCase()+p.slice(1); if(p===(defs.persona||'aggressive')) o.selected=true; ps.appendChild(o); });
   pw.appendChild(pl); pw.appendChild(ps); row.appendChild(pw);
   document.getElementById('pts').appendChild(row);
-  var cb=new MC(mcw,defs.model||'anthropic/claude-haiku-4-5'); cb.setModels(S.models); S.rowCbs[id]=cb;
+  var cb=new MC(mcw,defs.model||'anthropic/claude-sonnet-4-6'); cb.setModels(S.models); S.rowCbs[id]=cb;
 }
 
 function removeRow(id){ delete S.rowCbs[id]; var el=document.getElementById(id); if(el) el.parentNode.removeChild(el); }
@@ -633,7 +633,7 @@ S.cbs.syn  = new MC(document.getElementById('syn-wrap'), 'anthropic/claude-sonne
 document.getElementById('addcr').addEventListener('click',function(){addCritic();});
 document.getElementById('addpt').addEventListener('click',function(){addPt();});
 addCritic({model:'anthropic/claude-sonnet-4-6',name:'Logician'});
-addPt({model:'anthropic/claude-haiku-4-5',persona:'aggressive',name:'Aggressive Player'});
+addPt({model:'anthropic/claude-sonnet-4-6',persona:'aggressive',name:'Aggressive Player'});
 restoreConfig();
 document.addEventListener('keydown',function(e){ if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&!S.running){e.preventDefault();startForge();} if(e.key==='Escape'&&S.running) quenchForge(); });
 </script>
